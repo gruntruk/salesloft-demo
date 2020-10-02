@@ -25,6 +25,10 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
+.env
+.env.*
+!.env.template
+
 /public/packs
 /public/packs-test
 /node_modules
