@@ -7,13 +7,16 @@
 
 import Vue from 'vue'
 import App from '../app.vue'
+import PeopleGrid from '../people-grid';
+
+Vue.component('people-grid', PeopleGrid);
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({
     render: h => h(App)
   }).$mount()
-  document.body.appendChild(app.$el)
 
+  document.getElementsByClassName('container')[0].appendChild(app.$el);
   console.log(app)
 })
 
@@ -34,12 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // import Vue from 'vue/dist/vue.esm'
 // import App from '../app.vue'
-//
+
 // document.addEventListener('DOMContentLoaded', () => {
 //   const app = new Vue({
-//     el: '#hello',
+//     el: '#people-grid',
 //     data: {
-//       message: "Can you say hello?"
+//       message: "Can you say hello momo?"
 //     },
 //     components: { App }
 //   })

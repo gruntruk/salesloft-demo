@@ -1,22 +1,23 @@
 <template>
-  <div id="app">
-    <p>{{ message }}</p>
+  <div id="people-view">
+    <h2>SalesLoft People View</h2>
+    <people-grid v-bind:data="people"/>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
-  data: function () {
-    return {
-      message: "Hello Vue!"
-    }
+  data () {
+    return { people: [] }
+  },
+  mounted () {
+    axios
+      .get('/api/people')
+      .then(response => {
+        this.people = response.data.data;
+      })
   }
 }
 </script>
-
-<style scoped>
-p {
-  font-size: 2em;
-  text-align: center;
-}
-</style>

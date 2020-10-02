@@ -3,10 +3,6 @@
 require 'test_helper'
 
 class SalesLoftApiGatewayTest < ActiveSupport::TestCase
-  def file_fixture_path(file)
-    Rails.root.join("test/fixtures/files/#{file}")
-  end
-
   setup do
     @api = SalesLoftApiGateway.new(api_key: SecureRandom.uuid)
   end
@@ -31,7 +27,7 @@ class SalesLoftApiGatewayTest < ActiveSupport::TestCase
 
     response = @api.people
 
-    assert response.success?
+    assert_not response[:data].empty?
   end
 
   test 'will fetch specific page of people data' do
@@ -41,7 +37,7 @@ class SalesLoftApiGatewayTest < ActiveSupport::TestCase
 
     response = @api.people(page: 2)
 
-    assert response.success?
+    assert_not response[:data].empty?
   end
 
   test 'will throw when people data request fails' do
@@ -59,7 +55,7 @@ class SalesLoftApiGatewayTest < ActiveSupport::TestCase
 
     response = @api.people
 
-    assert_not response['data'].empty?
+    assert_not response[:data].empty?
   end
 
   test 'will return people metadata' do
@@ -68,6 +64,32 @@ class SalesLoftApiGatewayTest < ActiveSupport::TestCase
 
     response = @api.people
 
-    assert response['metadata'].present?
+    assert response[:metadata].present?
+  end
+
+  test 'will return all available people data' do
+    first_page_response = file_fixture_json('people_response_ok.json')
+    first_page_response[:metadata][:paging][:total_pages] = 3
+    stub_request(:get, 'https://api.salesloft.com/v2/people')
+      .with(query: hash_including('include_paging_counts': 'true', 'per_page': '100'))
+      .to_return(body: first_page_response.to_json)
+    stub_request(:get, 'https://api.salesloft.com/v2/people')
+      .with(query: hash_including('page': '2', 'per_page': '100'))
+      .to_return(body: file_fixture_path('people_response_ok.json').read)
+    stub_request(:get, 'https://api.salesloft.com/v2/people')
+      .with(query: hash_including('page': '3', 'per_page': '100'))
+      .to_return(body: file_fixture_path('people_response_ok.json').read)
+
+    people = @api.all_people
+
+    assert_equal first_page_response[:data].size * 3, people.size
+  end
+
+  def file_fixture_path(file)
+    Rails.root.join("test/fixtures/files/#{file}")
+  end
+
+  def file_fixture_json(file)
+    JSON.parse(file_fixture_path(file).read, symbolize_names: true)
   end
 end

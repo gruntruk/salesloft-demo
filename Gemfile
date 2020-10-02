@@ -31,6 +31,7 @@ group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '~> 3.2'
+  gem 'foreman'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
@@ -50,3 +51,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'bootstrap', '~> 4.5'
 gem 'httparty', '~> 0.18.1'
+
+gem "typhoeus", "~> 1.4"
