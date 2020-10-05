@@ -2,8 +2,13 @@
 
 class PeopleController < ActionController::API
   def index
-    response = api_gateway.people(page: params[:page])
+    response = api_gateway.people(page: params[:page] || 1)
     render json: response
+  end
+
+  def frequency_count
+    @presenter = CharacterFrequencyPresenter.new(api_gateway.all_people)
+    render json: { data: @presenter.summary, success: true }
   end
 
   private

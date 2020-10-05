@@ -5,6 +5,7 @@ require 'application_system_test_case'
 class HomeTest < ApplicationSystemTestCase
   def setup
     visit root_url
+    assert_selector 'span.sr-only', text: 'Loading'
     assert_selector 'h2', text: 'SalesLoft People View'
   end
 
@@ -16,5 +17,14 @@ class HomeTest < ApplicationSystemTestCase
     assert_selector 'th', text: 'Name'
     assert_selector 'th', text: 'Email'
     assert_selector 'th', text: 'Job Title'
+  end
+
+  test 'will allow opening the frequency count view' do
+    click_link 'Frequency Count'
+    assert_selector 'span.sr-only', text: 'Loading'
+
+    assert_selector 'th', text: 'Character'
+    assert_selector 'th', text: '# Occurrences'
+    assert_selector 'caption', text: /\d+ results/i
   end
 end

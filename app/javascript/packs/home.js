@@ -8,8 +8,10 @@
 import Vue from 'vue'
 import App from '../app.vue'
 import PeopleGrid from '../people-grid';
+import FrequencyView from '../frequency-view';
 
 Vue.component('people-grid', PeopleGrid);
+Vue.component('frequency-view', FrequencyView);
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({

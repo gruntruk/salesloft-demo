@@ -26,7 +26,7 @@ module SalesloftDemo
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
-    config.autoload_paths += ['app/services']
+    config.autoload_paths += ['app/services', 'app/presenters']
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

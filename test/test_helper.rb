@@ -10,5 +10,17 @@ module ActiveSupport
     parallelize(workers: :number_of_processors)
 
     # Add more helper methods to be used by all tests here...
+
+    def file_fixture_path(file)
+      Rails.root.join("test/fixtures/files/#{file}")
+    end
+
+    def file_fixture_json(file)
+      payload = JSON.decode(file_fixture_path(file).read).with_indifferent_access
+      if block_given?
+        yield payload
+      end
+      payload
+    end
   end
 end
