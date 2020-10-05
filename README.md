@@ -1,24 +1,27 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This submission uses the following runtime dependencies:
 
-Things you may want to cover:
+* Ruby 2.7 + Bundler
 
-* Ruby version
+* Node 12
 
-* System dependencies
+* Rails 6
 
-* Configuration
+## Running the Sample
 
-* Database creation
+After bundling dependencies you must do the following:
 
-* Database initialization
+1. Copy `.env.template` to the requisite `.env` file and update the SALESLOFT_API_KEY variable within with a working API key
 
-* How to run the test suite
+1. Start the local server with `bin/foreman start`
 
-* Services (job queues, cache servers, search engines, etc.)
+1. Open your browser to `http://localhost:3000`
 
-* Deployment instructions
+## Running the Test Suite
 
-* ...
+This sample includes both unit and system tests. To execute them you can do the following:
+
+1. Run unit/integration tests with `bin/rails test`
+
+1. Run system tests with `bin/rails test:system`

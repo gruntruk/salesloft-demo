@@ -27,4 +27,24 @@ class HomeTest < ApplicationSystemTestCase
     assert_selector 'th', text: '# Occurrences'
     assert_selector 'caption', text: /\d+ results/i
   end
+
+  test 'will allow opening the duplicate suggestions view' do
+    click_link 'Duplicate Suggestions'
+    assert_selector 'span.sr-only', text: 'Loading'
+
+    assert_selector 'th', text: 'Name'
+    assert_selector 'th', text: 'Email'
+    assert_selector 'th', text: 'Job Title'
+    assert_selector 'caption', text: '6 results'
+  end
+
+  test 'will allow opening the people view' do
+    click_link 'People'
+    assert_selector 'span.sr-only', text: 'Loading'
+
+    assert_selector 'th', text: 'Name'
+    assert_selector 'th', text: 'Email'
+    assert_selector 'th', text: 'Job Title'
+    assert_selector 'caption', text: '25 results'
+  end
 end

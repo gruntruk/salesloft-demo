@@ -1,5 +1,6 @@
 <template>
     <table class="table table-striped">
+      <caption>{{ data.length }} results</caption>
       <thead>
         <tr>
           <th>Name</th>

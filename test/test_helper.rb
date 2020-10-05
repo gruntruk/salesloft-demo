@@ -17,9 +17,7 @@ module ActiveSupport
 
     def file_fixture_json(file)
       payload = JSON.decode(file_fixture_path(file).read).with_indifferent_access
-      if block_given?
-        yield payload
-      end
+      yield payload if block_given?
       payload
     end
   end

@@ -11,6 +11,11 @@ class PeopleController < ActionController::API
     render json: { data: @presenter.summary, success: true }
   end
 
+  def duplicate_suggestions
+    @presenter = SuggestedDuplicatesPresenter.new(api_gateway.all_people)
+    render json: { data: @presenter.summary, success: true }
+  end
+
   private
 
   def api_gateway

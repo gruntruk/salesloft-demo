@@ -10,15 +10,20 @@
 
     <ul class="nav">
       <li class="nav-item">
-        <a id="people-view-view" class="nav-link active" href="#" v-on:click="currentView = 'people-view'">People</a>
+        <a id="people-view-view" class="nav-link active" href="#" v-on:click="openPeopleView">People</a>
       </li>
       <li class="nav-item">
         <a id="frequency-view" class="nav-link" href="#" v-on:click="openFrequencyView">Frequency Count</a>
       </li>
       <li>
-        <a id="dupe-view" class="nav-link" href="#" v-on:click="currentView = 'dupe-view'">Duplicates</a>
+        <a id="dupe-view" class="nav-link" href="#" v-on:click="openDuplicatesView">Duplicate Suggestions</a>
       </li>
     </ul>
+
+    <div class="alert alert-danger" role="alert" v-if="errorMessage">
+      <h4 class="alert-heading">Oops, something went wrong :(</h4>
+      <p>{{ errorMessage }}</p>
+    </div>
 
     <people-grid v-bind:data="people" v-if="currentView === 'people-view'" />
 
@@ -31,15 +36,37 @@ import axios from 'axios';
 
 export default {
   data () {
-    return { people: [], currentView: 'people-view', frequencySummary: [], isLoading: false }
+    return { 
+      people: [], 
+      currentView: 'people-view', 
+      errorMessage: undefined,
+      frequencySummary: [], 
+      isLoading: false 
+    }
   },
   methods: {
+    openPeopleView (event) {
+      axios
+        .get('/api/people')
+        .then(response => {
+          this.people = response.data.data;
+          this.currentView = 'people-view';
+        })
+    },
     openFrequencyView (event) {
       axios
         .get('/api/people/frequency_count')
         .then(response => {
           this.frequencySummary = response.data.data;
           this.currentView = 'frequency-view';
+        })
+    },
+    openDuplicatesView (event) {
+      axios
+        .get('/api/people/duplicate_suggestions')
+        .then(response => {
+          this.people = response.data.data;
+          this.currentView = 'people-view';
         })
     }
   },
@@ -49,21 +76,21 @@ export default {
       return config;
     }, (error) => {
       this.isLoading = false;
+      this.errorMessage = `${error.message} (${error.request.status})`
       return Promise.reject(error);
     })
 
     axios.interceptors.response.use((response) => {
       this.isLoading = false;
+      this.errorMessage = undefined;
       return response;
     }, (error) => {
       this.isLoading = false;
+      this.errorMessage = `${error.message} (${error.request.status})`
       return Promise.reject(error);
     });
-    axios
-      .get('/api/people')
-      .then(response => {
-        this.people = response.data.data;
-      })
+
+    this.openPeopleView();
   }
 }
 </script>

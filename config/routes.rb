@@ -3,9 +3,10 @@ Rails.application.routes.draw do
   root to: 'home#show'
 
   scope '/api' do
-    resources :people, :only => [:index] do
-      collection do 
+    resources :people, only: [:index] do
+      collection do
         get 'frequency_count'
+        get 'duplicate_suggestions'
       end
     end
   end
